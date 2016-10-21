@@ -1,4 +1,5 @@
 var fs     = require('fs'),
+	fsp     = require('fs-promise'),
 	marked = require('marked'),
 	path   = require('path'),
 	_ = require('lodash');
