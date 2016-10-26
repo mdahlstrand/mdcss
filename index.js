@@ -105,18 +105,11 @@ module.exports = require('postcss').plugin('sgcss', function (opts) {
 			.then(function () {
 				return fsp.outputFile(path.join(opts.destination, opts.index), docs.template);
 			})
-			// construct full asset paths
-			.then(function () {
-				return _.concat(
-					_.map(opts.assets.img, constructFullAssetPath),
-					_.map(opts.assets.js, constructFullAssetPath),
-					_.map(opts.assets.css, constructFullAssetPath)
-				);
-			})
 			// then copy any of the additional assets into the destination
-			.then(function (assets) {
+			.then(function () {
+				var assets = _.flatten(_.values(opts.assets));
 				return Promise.all(assets.map(function (src) {
-					return fsp.copy(src, path.join(opts.destination, path.basename(src)));
+					return fsp.copy(constructFullAssetPath(src), path.join(opts.destination, src));
 				}));
 			});
 		});
